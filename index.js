@@ -27,11 +27,11 @@ module.exports = {
       await createSentryConfig({ sentryOrg, sentryProject, sentryAuthKey })
     }
 
-    // await sentryRelease({
-    //   sentryAuthKey,
-    //   sourceMapLocation,
-    //   sourceMapPrefix
-    // })
+    await sentryRelease({
+      sentryAuthKey,
+      sourceMapLocation,
+      sourceMapPrefix
+    })
 
     if (RUNNING_IN_NETLIFY) {
       console.log('delete sentry config file')
@@ -50,7 +50,7 @@ async function sentryRelease({ sentryAuthKey, sourceMapLocation }) {
   const cli = new SentryCli()
 
   const generatedRelease = await cli.releases.proposeVersion()
-  console.log('generatedRelease', generatedRelease)
+  console.log('generatedRelease name', generatedRelease)
 
   const release = process.env.COMMIT_REF
 

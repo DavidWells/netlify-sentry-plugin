@@ -7,6 +7,6 @@
   package = "../index.js"
 
   [plugins.inputs]
-    sentryOrg = "foo"
-    sentryProject = "baz"
-    sentryAuthKey = "pop"
+    sentryOrg = "netlify-5c"
+    sentryProject = "5219897"
+    # sentryAuthKey = "shhhhh"
