@@ -8,5 +8,5 @@
 
   [plugins.inputs]
     sentryOrg = "netlify-5c"
-    sentryProject = "5219897"
+    sentryProject = "plugin-example-site"
     # sentryAuthKey = "shhhhh"
