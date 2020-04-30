@@ -86,7 +86,10 @@ async function sentryRelease({ sentryAuthKey, sourceMapLocation }) {
   });
    */
   // https://docs.sentry.io/cli/releases/#sentry-cli-commit-integration
-  await cli.releases.setCommits(release, { auto: true })
+  await cli.releases.setCommits(release, {
+    repo: 'repo',
+    auto: true
+  })
   // https://docs.sentry.io/cli/releases/#finalizing-releases
   await cli.releases.finalize(release)
 
