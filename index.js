@@ -43,6 +43,10 @@ module.exports = {
       sourceMapPrefix
     })
 
+    console.log()
+    console.log('Sentry release successful!')
+    console.log()
+
     if (RUNNING_IN_NETLIFY) {
       await deleteSentryConfig()
     }
