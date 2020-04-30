@@ -55,7 +55,7 @@ async function sentryRelease({ sentryAuthKey, sourceMapLocation }) {
   const release = process.env.COMMIT_REF
 
   // const releaseVersion = await cli.releases.proposeVersion();
-  console.log('Proposed version:\n', release)
+  console.log('Proposed version:\n', release);
 
   const options = {
     debug: false,
