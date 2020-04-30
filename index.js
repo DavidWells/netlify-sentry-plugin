@@ -15,7 +15,7 @@ module.exports = {
     const { PUBLISH_DIR, IS_LOCAL } = constants
     console.log(inspect(pluginApi, { showHidden: false, depth: null }))
     const RUNNING_IN_NETLIFY = !IS_LOCAL
-    const sentryOrg = inputs.sentryAuthKey || process.env.SENTRY_ORG
+    const sentryOrg = inputs.sentryOrg || process.env.SENTRY_ORG
     const sentryProject = inputs.sentryProject || process.env.SENTRY_PROJECT
     const sentryAuthKey = inputs.sentryAuthKey || process.env.SENTRY_AUTH_TOKEN
     const sourceMapLocation = inputs.sourceMapLocation || PUBLISH_DIR
