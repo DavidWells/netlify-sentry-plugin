@@ -4,7 +4,7 @@
   command = "npm run build"
 
 [[plugins]]
-  package = "./index.js"
+  package = "../index.js"
 
   [plugins.inputs]
     sentryOrg = "foo"
