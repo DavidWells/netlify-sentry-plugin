@@ -11,10 +11,17 @@ const SENTRY_CONFIG_PATH = path.resolve(CWD, '.sentryclirc')
 
 module.exports = {
   onPostBuild: async (pluginApi) => {
+    console.log('---------------------------------------------------')
+    console.log('Netlify Build Plugin API values')
+    console.log(inspect(pluginApi, { showHidden: false, depth: null }))
+    console.log('---------------------------------------------------')
+
     const { constants, inputs, utils } = pluginApi
     const { PUBLISH_DIR, IS_LOCAL } = constants
-    console.log(inspect(pluginApi, { showHidden: false, depth: null }))
+
     const RUNNING_IN_NETLIFY = !IS_LOCAL
+
+    /* Set the user input settings */
     const sentryOrg = inputs.sentryOrg || process.env.SENTRY_ORG
     const sentryProject = inputs.sentryProject || process.env.SENTRY_PROJECT
     const sentryAuthKey = inputs.sentryAuthKey || process.env.SENTRY_AUTH_TOKEN
@@ -23,10 +30,10 @@ module.exports = {
 
     /* If inside of remote Netlify CI, setup crendentials */
     if (RUNNING_IN_NETLIFY) {
-      console.log('add sentry config file')
       await createSentryConfig({ sentryOrg, sentryProject, sentryAuthKey })
     }
 
+    /* Run sentry release */
     await sentryRelease({
       sentryAuthKey,
       sourceMapLocation,
@@ -34,7 +41,6 @@ module.exports = {
     })
 
     if (RUNNING_IN_NETLIFY) {
-      console.log('delete sentry config file')
       await deleteSentryConfig()
     }
   }
@@ -50,7 +56,7 @@ async function sentryRelease({ sentryAuthKey, sourceMapLocation }) {
   const cli = new SentryCli()
 
   const generatedRelease = await cli.releases.proposeVersion()
-  console.log('generatedRelease name', generatedRelease)
+  console.log('Generated release name', generatedRelease)
 
   const release = process.env.COMMIT_REF
 
@@ -64,8 +70,7 @@ async function sentryRelease({ sentryAuthKey, sourceMapLocation }) {
     rewrite: true,
     ignore: ['node_modules']
   }
-
-  console.log('upload options:\n', options)
+  // console.log('upload options:\n', options)
 
   // await cli.execute(['releases', 'delete', version, 'A']);
 
@@ -96,7 +101,6 @@ async function createSentryConfig({ sentryOrg, sentryProject, sentryAuthKey }) {
   project=${sentryProject}
   org=${sentryOrg}
   `
-  console.log('sentryConfigFile', sentryConfigFile)
   await writeFile(SENTRY_CONFIG_PATH, sentryConfigFile, { flag: 'w+' })
 }
 
