@@ -1,0 +1,45 @@
+{
+  "name": "netlify-plugin-sentry",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "ava --reset-cache",
+    "test": "ava -v",
+    "build": "netlify build",
+    "watch": "npm test -- --watch -v",
+    "publish": "git push origin && git push origin --tags",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish"
+  },
+  "keywords": [
+    "netlify",
+    "netlify-plugin",
+    "error-tracking",
+    "sentry"
+  ],
+  "files": [
+    "index.js",
+    "package.json",
+    "package-lock.json",
+    "README.md"
+  ],
+  "author": "David Wells",
+  "repository": "https://github.com/netlify-labs/netlify-plugin-sitemap",
+  "bugs": {
+    "url": "https://github.com/netlify-labs/netlify-plugin-sitemap/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@sentry/cli": "^1.52.3"
+  },
+  "engines": {
+    "node": ">=8.12.0"
+  },
+  "devDependencies": {
+    "ava": "^2.1.0",
+    "netlify-cli": "^2.48.0",
+    "rimraf": "^3.0.2"
+  }
+}

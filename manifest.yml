@@ -1,0 +1,20 @@
+name: netlify-plugin-sentry
+inputs:
+  - name: sentryOrg
+    description: Sentry organization name
+    required: true
+  - name: sentryProject
+    description: Sentry project name
+    required: true
+  - name: sentryAuthKey
+    description: Auth token for Sentry
+  - name: releaseId
+    description: Manually set a release id
+  - name: sourceMapLocation
+    description: Where are the source maps located?
+  - name: sourceMapPrefix
+    description: Optional prefix for the location of source maps
+    default: '~/'
+  # - name: excludePaths
+  #   # description: Excluded files.
+  #   default: []
