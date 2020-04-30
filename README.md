@@ -17,7 +17,7 @@ Note: The `[[plugins]]` line is required for each plugin, even if you have other
 
 ## Configuration
 
-Configure the plugin with your sentry settings
+Configure the plugin with your sentry settings.
 
 ```toml
 [[plugins]]
@@ -28,3 +28,9 @@ Configure the plugin with your sentry settings
     sentryProject = ""
     sentryAuthKey = ""
 ```
+
+You can also use [site environment variables](https://docs.netlify.com/configure-builds/environment-variables/) to configure these values.
+
+- `process.env.SENTRY_ORG` - Your Sentry organization name
+- `process.env.SENTRY_PROJECT` - Your Sentry project name
+- `process.env.SENTRY_AUTH_TOKEN` - Auth token for Sentry

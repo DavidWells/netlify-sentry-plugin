@@ -25,9 +25,9 @@ module.exports = {
     const RUNNING_IN_NETLIFY = !IS_LOCAL
 
     /* Set the user input settings */
-    const sentryOrg = inputs.sentryOrg || process.env.SENTRY_ORG
-    const sentryProject = inputs.sentryProject || process.env.SENTRY_PROJECT
-    const sentryAuthKey = inputs.sentryAuthKey || process.env.SENTRY_AUTH_TOKEN
+    const sentryOrg = process.env.SENTRY_ORG || inputs.sentryOrg
+    const sentryProject = process.env.SENTRY_PROJECT || inputs.sentryProject
+    const sentryAuthKey = process.env.SENTRY_AUTH_TOKEN || inputs.sentryAuthKey
     const sourceMapLocation = inputs.sourceMapLocation || PUBLISH_DIR
     const sourceMapPrefix = inputs.sourceMapPrefix
 
