@@ -1,6 +1,8 @@
-# Netlify sentry plugin
+# Netlify Sentry plugin &nbsp;&nbsp;&nbsp;<a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify/netlify-sentry-plugin"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
 
 Automatically generate a sentry release for your site after it finishes building in Netlify.
+
+Make sure build plugins are enabled on your site to see the plugin run.
 
 ## Installation
 
