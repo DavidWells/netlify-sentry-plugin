@@ -96,7 +96,7 @@ async function createSentryConfig({ sentryOrg, sentryProject, sentryAuthKey }) {
   project=${sentryProject}
   org=${sentryOrg}
   `
-
+  console.log('sentryConfigFile', sentryConfigFile)
   await writeFile(SENTRY_CONFIG_PATH, sentryConfigFile, { flag: 'w+' })
 }
 
