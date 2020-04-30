@@ -3,6 +3,12 @@
   publish = "build"
   command = "npm run build"
 
+# Environment var template for Deploy to Netlify button
+[template.environment]
+  SENTRY_ORG = "Your Sentry organization name" 
+  SENTRY_PROJECT = "Your Sentry project name"
+  SENTRY_AUTH_TOKEN = "Auth token for Sentry"
+
 [[plugins]]
   package = "../index.js"
 
