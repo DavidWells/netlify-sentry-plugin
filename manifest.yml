@@ -9,7 +9,7 @@ inputs:
   - name: sentryEnvironment
     description: The name of the environment being deployed to
     required: true
-  - name: sentryAuthenticationToken
+  - name: sentryAuthToken
     description: Authentication token for Sentry
   - name: sourceMapPath
     description: Folder in which to scan for source maps to upload

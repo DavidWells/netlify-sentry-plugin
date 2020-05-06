@@ -86,8 +86,10 @@ async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath
   })
 
   // https://docs.sentry.io/cli/releases/#sentry-cli-commit-integration
+  const repository = process.env.REPOSITORY_URL.split('/').slice(-2).join('/')
   await cli.releases.setCommits(release, {
-    auto: true
+    repo: repository,
+    commit: process.env.COMMIT_REF
   })
   // https://docs.sentry.io/cli/releases/#finalizing-releases
   await cli.releases.finalize(release)
