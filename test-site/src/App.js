@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 
 function throwException() {
-  console.log(1/0);
+  console.log(nothing);
 }
 
 export default function App() {
