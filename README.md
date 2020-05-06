@@ -34,7 +34,7 @@ Configure the plugin with your sentry settings.
     sentryOrg = ""
     sentryProject = ""
     sentryAuthToken = ""
-    sourceMapPath = "" # defaults: netlify publish directory
+    sourceMapPath = "" # default: netlify publish directory
     sourceMapUrlPrefix = "" # default: "~/"
 ```
 
@@ -44,5 +44,5 @@ You can also use [site environment variables](https://docs.netlify.com/configure
 
 - `process.env.SENTRY_ORG` - The slug of the organization name in Sentry
 - `process.env.SENTRY_PROJECT` - The slug of the project name in Sentry
-- `process.env.SENTRY_ENVIRONMENT` - The name of the environment being deployed to (Defaults to netlify [deploy context](https://docs.netlify.com/site-deploys/overview/#deploy-contexts))
+- `process.env.SENTRY_ENVIRONMENT` - The name of the environment being deployed to (default: netlify [deploy context](https://docs.netlify.com/site-deploys/overview/#deploy-contexts))
 - `process.env.SENTRY_AUTH_TOKEN` - Authentication token for Sentry
