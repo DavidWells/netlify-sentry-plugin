@@ -12,3 +12,6 @@ inputs:
     description: Folder in which to scan for source maps to upload
   - name: sourceMapUrlPrefix
     description: Optional prefix for the location of source maps
+  - name: skipSetCommits
+    description: Set this to true if you want to disable commit tracking
+    default: False

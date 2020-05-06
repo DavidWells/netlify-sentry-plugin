@@ -11,6 +11,13 @@ Before proceeding, you'll first want to ensure that your Sentry project is set u
 
 Make sure build plugins are enabled on your site to see the plugin run.
 
+## Create a Sentry Internal Integration
+For Jenkins to communicate securely with Sentry, you'll need to create a new internal integration. In Sentry, navigate to: *Settings > Developer Settings > New Internal Integration*.
+
+Give your new integration a name (for example, Netlify Deploy Integration”) and specify the necessary permissions. In this case, we need Admin access for “Release” and Read access for “Organization”.
+
+Click “Save” at the bottom of the page and then grab your token, you'll need this in the next step.
+
 ## Installation
 
 To install, add the following lines to your `netlify.toml` file:
@@ -36,6 +43,7 @@ Configure the plugin with your sentry settings.
     sentryAuthToken = ""  # note: we recommend this be set as an environment variable (see below)
     sourceMapPath = "" # default: netlify publish directory
     sourceMapUrlPrefix = "" # default: "~/"
+    skipSetCommits = Boolean # default: False
 ```
 
 For more information about the parameters above, please see the [Sentry release management docs](https://docs.sentry.io/cli/releases/).

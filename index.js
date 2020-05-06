@@ -39,31 +39,30 @@ module.exports = {
     const sentryEnvironment = process.env.SENTRY_ENVIRONMENT || process.env.CONTEXT
     const sourceMapPath = inputs.sourceMapPath || PUBLISH_DIR
     const sourceMapUrlPrefix = inputs.sourceMapUrlPrefix || DEFAULT_SOURCE_MAP_URL_PREFIX
+    const skipSetCommits = inputs.skipSetCommits || false
 
-    /* If inside of remote Netlify CI, setup crendentials */
     if (RUNNING_IN_NETLIFY) {
       await createSentryConfig({ sentryOrg, sentryProject, sentryAuthToken })
-    }
 
-    /* Notify Sentry of release being deployed on Netlify */
-    await sentryRelease({
-      sentryAuthToken,
-      sentryEnvironment,
-      sourceMapPath,
-      sourceMapUrlPrefix
-    })
+      /* Notify Sentry of release being deployed on Netlify */
+      await sentryRelease({
+        sentryAuthToken,
+        sentryEnvironment,
+        sourceMapPath,
+        sourceMapUrlPrefix,
+        skipSetCommits
+      })
 
-    console.log()
-    console.log('Successfully notified Sentry of deployment!')
-    console.log()
+      console.log()
+      console.log('Successfully notified Sentry of deployment!')
+      console.log()
 
-    if (RUNNING_IN_NETLIFY) {
       await deleteSentryConfig()
     }
   }
 }
 
-async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix }) {
+async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix, skipSetCommits }) {
   // default config file is read from ~/.sentryclirc
   if (!sentryAuthToken) {
     throw new Error('SentryCLI needs an authentication token. Please set env variable SENTRY_AUTH_TOKEN')
@@ -87,11 +86,13 @@ async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath
   })
 
   // https://docs.sentry.io/cli/releases/#sentry-cli-commit-integration
-  const repository = process.env.REPOSITORY_URL.split('/').slice(-2).join('/')
-  await cli.releases.setCommits(release, {
-    repo: repository,
-    commit: process.env.COMMIT_REF
-  })
+  if (!skipSetCommits) {
+    const repository = process.env.REPOSITORY_URL.split('/').slice(-2).join('/')
+    await cli.releases.setCommits(release, {
+      repo: repository,
+      commit: process.env.COMMIT_REF
+    })
+  }
   // https://docs.sentry.io/cli/releases/#finalizing-releases
   await cli.releases.finalize(release)
 
