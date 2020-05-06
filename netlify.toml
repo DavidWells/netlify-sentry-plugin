@@ -14,4 +14,3 @@
     sentryOrg = "test-organization-q3"
     sentryProject = "netlify-test-app"
     sentryEnvironment = "production"
-    sourceMapPath = "build"
