@@ -33,7 +33,7 @@ Configure the plugin with your sentry settings.
   [plugins.inputs]
     sentryOrg = ""
     sentryProject = ""
-    sentryAuthToken = "" # note: we recommend this be set as an environment variable (see below)
+    sentryAuthToken = ""
     sourceMapPath = "" # default: netlify publish directory
     sourceMapUrlPrefix = "" # default: "~/"
 ```

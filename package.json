@@ -32,9 +32,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@sentry/cli": "^1.52.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "@sentry/cli": "^1.52.3"
   },
   "engines": {
     "node": ">=8.12.0"
