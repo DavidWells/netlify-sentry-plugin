@@ -43,7 +43,7 @@ Configure the plugin with your sentry settings.
     sentryAuthToken = ""  # note: we recommend this be set as an environment variable (see below)
     sourceMapPath = "" # default: netlify publish directory
     sourceMapUrlPrefix = "" # default: "~/"
-    skipSetCommits = Boolean # default: False
+    skipSetCommits = Boolean # default: false
 ```
 
 For more information about the parameters above, please see the [Sentry release management docs](https://docs.sentry.io/cli/releases/).
