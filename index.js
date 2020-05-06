@@ -35,18 +35,18 @@ module.exports = {
     const sentryOrg = process.env.SENTRY_ORG || inputs.sentryOrg
     const sentryProject = process.env.SENTRY_PROJECT || inputs.sentryProject
     const sentryEnvironment = process.env.SENTRY_ENVIRONMENT || inputs.sentryEnvironment
-    const sentryAuthenticationToken = process.env.SENTRY_AUTH_TOKEN || inputs.sentryAuthenticationToken
+    const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN || inputs.sentryAuthToken
     const sourceMapPath = inputs.sourceMapPath || PUBLISH_DIR
     const sourceMapUrlPrefix = inputs.sourceMapUrlPrefix || DEFAULT_SOURCE_MAP_URL_PREFIX
 
     /* If inside of remote Netlify CI, setup crendentials */
     if (RUNNING_IN_NETLIFY) {
-      await createSentryConfig({ sentryOrg, sentryProject, sentryAuthenticationToken })
+      await createSentryConfig({ sentryOrg, sentryProject, sentryAuthToken })
     }
 
     /* Notify Sentry of release being deployed on Netlify */
     await sentryRelease({
-      sentryAuthenticationToken,
+      sentryAuthToken,
       sentryEnvironment,
       sourceMapPath,
       sourceMapUrlPrefix
@@ -62,9 +62,9 @@ module.exports = {
   }
 }
 
-async function sentryRelease({ sentryAuthenticationToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix }) {
+async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix }) {
   // default config file is read from ~/.sentryclirc
-  if (!sentryAuthenticationToken) {
+  if (!sentryAuthToken) {
     throw new Error('SentryCLI needs an authentication token. Please set env variable SENTRY_AUTH_TOKEN')
   }
 
@@ -96,10 +96,10 @@ async function sentryRelease({ sentryAuthenticationToken, sentryEnvironment, sou
   await cli.releases.execute(['releases', 'deploys', release, 'new', '-e', sentryEnvironment])
 }
 
-async function createSentryConfig({ sentryOrg, sentryProject, sentryAuthenticationToken }) {
+async function createSentryConfig({ sentryOrg, sentryProject, sentryAuthToken }) {
   const sentryConfigFile = `
   [auth]
-  token=${sentryAuthenticationToken}
+  token=${sentryAuthToken}
   [defaults]
   project=${sentryProject}
   org=${sentryOrg}

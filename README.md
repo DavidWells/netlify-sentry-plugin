@@ -1,6 +1,13 @@
-# Netlify Sentry plugin &nbsp;&nbsp;&nbsp;<a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify/netlify-sentry-plugin"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
+# Netlify Sentry plugin &nbsp;&nbsp;&nbsp;<a href="https://app.netlify.com/start/deploy?repository=https://github.com/jonesphillip/netlify-sentry-plugin"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
 
-Automatically generate a [Sentry](https://sentry.io/) release for your site after it finishes building in Netlify.
+Automatically notify [Sentry](https://sentry.io/) of new releases being deployed to your site after it finishes building in Netlify.
+
+The Netlify Sentry build plugin:
+* Notifies Sentry of new releases being deployed
+* Uploads source maps to Sentry
+* Sends Sentry the commit SHA of HEAD to enable commit features
+
+Before proceeding, you'll first want to ensure that your Sentry project is set up properly to track commit metadata. The easiest way to do that is to [install a repository integration](https://docs.sentry.io/workflow/releases/?platform=python#install-repo-integration).
 
 Make sure build plugins are enabled on your site to see the plugin run.
 
@@ -26,11 +33,17 @@ Configure the plugin with your sentry settings.
   [plugins.inputs]
     sentryOrg = ""
     sentryProject = ""
-    sentryAuthKey = ""
+    sentryEnvironment = ""
+    sentryAuthToken = ""
+    sourceMapPath = ""
+    sourceMapUrlPrefix = ""
 ```
+
+For more information about the parameters above, please see the [Sentry release management docs](https://docs.sentry.io/cli/releases/).
 
 You can also use [site environment variables](https://docs.netlify.com/configure-builds/environment-variables/) to configure these values.
 
-- `process.env.SENTRY_ORG` - Your Sentry organization name
-- `process.env.SENTRY_PROJECT` - Your Sentry project name
-- `process.env.SENTRY_AUTH_TOKEN` - Auth token for Sentry
+- `process.env.SENTRY_ORG` - The slug of the organization name in Sentry
+- `process.env.SENTRY_PROJECT` - The slug of the project name in Sentry
+- `process.env.SENTRY_ENVIRONMENT` - The name of the environment being deployed to
+- `process.env.SENTRY_AUTH_TOKEN` - Authentication token for Sentry
