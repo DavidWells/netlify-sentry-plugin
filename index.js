@@ -1,23 +1,30 @@
-/* Generates sentry releases */
+/* 
+  The Sentry Netlify build plugin:
+    - Notifies Sentry of new releases being deployed.
+    - Uploads source maps to Sentry.
+    - Sends Sentry the commit SHA of HEAD to enable commit features.
+*/
+
 const fs = require('fs')
 const path = require('path')
 const SentryCli = require('@sentry/cli')
 const { promisify, inspect } = require('util')
+
 const writeFile = promisify(fs.writeFile)
 const deleteFile = promisify(fs.unlink)
 
 const CWD = path.resolve(process.cwd())
 const SENTRY_CONFIG_PATH = path.resolve(CWD, '.sentryclirc')
+const DEFAULT_SOURCE_MAP_URL_PREFIX = "~/"
 
 module.exports = {
   onPostBuild: async (pluginApi) => {
-    /*
+
     // Uncomment this block to see all the values pluginApi has
     console.log('---------------------------------------------------')
     console.log('Netlify Build Plugin API values')
     console.log(inspect(pluginApi, { showHidden: false, depth: null }))
     console.log('---------------------------------------------------')
-    /**/
 
     const { constants, inputs, utils } = pluginApi
     const { PUBLISH_DIR, IS_LOCAL } = constants
@@ -27,24 +34,26 @@ module.exports = {
     /* Set the user input settings */
     const sentryOrg = process.env.SENTRY_ORG || inputs.sentryOrg
     const sentryProject = process.env.SENTRY_PROJECT || inputs.sentryProject
-    const sentryAuthKey = process.env.SENTRY_AUTH_TOKEN || inputs.sentryAuthKey
-    const sourceMapLocation = inputs.sourceMapLocation || PUBLISH_DIR
-    const sourceMapPrefix = inputs.sourceMapPrefix
+    const sentryEnvironment = process.env.SENTRY_ENVIRONMENT || inputs.sentryEnvironment
+    const sentryAuthenticationToken = process.env.SENTRY_AUTH_TOKEN || inputs.sentryAuthenticationToken
+    const sourceMapPath = inputs.sourceMapPath || PUBLISH_DIR
+    const sourceMapUrlPrefix = inputs.sourceMapUrlPrefix || DEFAULT_SOURCE_MAP_URL_PREFIX
 
     /* If inside of remote Netlify CI, setup crendentials */
     if (RUNNING_IN_NETLIFY) {
-      await createSentryConfig({ sentryOrg, sentryProject, sentryAuthKey })
+      await createSentryConfig({ sentryOrg, sentryProject, sentryAuthenticationToken })
     }
 
-    /* Run sentry release */
+    /* Notify Sentry of release being deployed on Netlify */
     await sentryRelease({
-      sentryAuthKey,
-      sourceMapLocation,
-      sourceMapPrefix
+      sentryAuthenticationToken,
+      sentryEnvironment,
+      sourceMapPath,
+      sourceMapUrlPrefix
     })
 
     console.log()
-    console.log('Sentry release successful!')
+    console.log('Successfully notified Sentry of deployment!')
     console.log()
 
     if (RUNNING_IN_NETLIFY) {
@@ -53,60 +62,44 @@ module.exports = {
   }
 }
 
-// https://github.com/tyschroed/part-placer/blob/d244bfa24eb633ba2c67349891cc9428104e3a49/scripts/sentry.js#L13
-async function sentryRelease({ sentryAuthKey, sourceMapLocation }) {
+async function sentryRelease({ sentryAuthenticationToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix }) {
   // default config file is read from ~/.sentryclirc
-  if (!sentryAuthKey) {
-    throw new Error('SentryCLI needs sentryAuthKey. Please set env variable SENTRY_AUTH_TOKEN')
+  if (!sentryAuthenticationToken) {
+    throw new Error('SentryCLI needs an authentication token. Please set env variable SENTRY_AUTH_TOKEN')
   }
-
-  const cli = new SentryCli()
-
-  const generatedRelease = await cli.releases.proposeVersion()
-  console.log('Generated release name', generatedRelease)
 
   const release = process.env.COMMIT_REF
+  const cli = new SentryCli()
 
-  // const releaseVersion = await cli.releases.proposeVersion();
-  console.log('Proposed version:\n', release)
-
-  const options = {
-    debug: false,
-    include: ['./build/'],
-    urlPrefix: '~',
-    rewrite: true,
-    ignore: ['node_modules']
-  }
-  // console.log('upload options:\n', options)
-
-  // await cli.execute(['releases', 'delete', version, 'A']);
+  console.log('Creating new release with version: ', release)
 
   // https://docs.sentry.io/cli/releases/#creating-releases
   await cli.releases.new(release)
+
   // https://docs.sentry.io/cli/releases/#managing-release-artifacts
-  await cli.releases.uploadSourceMaps(release, options)
-  /* create react app
   await cli.releases.uploadSourceMaps(release, {
-    include: ['build/static/js'],
-    urlPrefix: '~/static/js',
-    rewrite: false,
-  });
-   */
+    debug: false,
+    include: [sourceMapPath],
+    urlPrefix: sourceMapUrlPrefix,
+    rewrite: true,
+    ignore: ['node_modules']
+  })
+
   // https://docs.sentry.io/cli/releases/#sentry-cli-commit-integration
-  // await cli.releases.setCommits(release, {
-  //   repo: 'repo',
-  //   auto: true
-  // })
+  await cli.releases.setCommits(release, {
+    auto: true
+  })
   // https://docs.sentry.io/cli/releases/#finalizing-releases
   await cli.releases.finalize(release)
 
-  // Set script in head? https://github.com/dcsil/klutch/blob/8de5b6c524f15c1f7bc039c31a73c905b9e56bb5/app/client/plugins/sentry-cordova/scripts/before_compile.js#L109-L113
+  // https://docs.sentry.io/cli/releases/#creating-deploys
+  await cli.releases.execute(['releases', 'deploys', release, 'new', '-e', sentryEnvironment])
 }
 
-async function createSentryConfig({ sentryOrg, sentryProject, sentryAuthKey }) {
+async function createSentryConfig({ sentryOrg, sentryProject, sentryAuthenticationToken }) {
   const sentryConfigFile = `
   [auth]
-  token=${sentryAuthKey}
+  token=${sentryAuthenticationToken}
   [defaults]
   project=${sentryProject}
   org=${sentryOrg}

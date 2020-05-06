@@ -5,14 +5,13 @@
 
 # Environment var template for Deploy to Netlify button
 [template.environment]
-  SENTRY_ORG = "Your Sentry organization name" 
-  SENTRY_PROJECT = "Your Sentry project name"
-  SENTRY_AUTH_TOKEN = "Auth token for Sentry"
+  SENTRY_AUTH_TOKEN = "Authentication token for Sentry"
 
 [[plugins]]
   package = "../index.js"
 
   [plugins.inputs]
-    sentryOrg = "netlify-5c"
-    sentryProject = "plugin-example-site"
-    # sentryAuthKey = "shhhhh"
+    sentryOrg = "test-organization-q3"
+    sentryProject = "netlify-test-app"
+    sentryEnvironment = "production"
+    sourceMapPath = "build"
