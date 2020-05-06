@@ -3,9 +3,9 @@
 Automatically notify [Sentry](https://sentry.io/) of new releases being deployed to your site after it finishes building in Netlify.
 
 The Netlify Sentry build plugin:
-* Notifies Sentry of new releases being deployed
-* Uploads source maps to Sentry
-* Sends Sentry the commit SHA of HEAD to enable commit features
+* Notifies Sentry of new releases being deployed.
+* Uploads source maps to Sentry.
+* Sends Sentry the commit SHA of HEAD to enable commit features.
 
 Before proceeding, you'll first want to ensure that your Sentry project is set up properly to track commit metadata. The easiest way to do that is to [install a repository integration](https://docs.sentry.io/workflow/releases/?platform=python#install-repo-integration).
 
