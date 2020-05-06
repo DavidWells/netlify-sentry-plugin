@@ -7,7 +7,6 @@
 [template.environment]
   SENTRY_ORG = "Sentry organization slug"
   SENTRY_PROJECT = "Sentry project slug"
-  SENTRY_ENVIRONMENT = "Sentry environment to deploy to"
   SENTRY_AUTH_TOKEN = "Authentication token for Sentry"
 
 [[plugins]]
@@ -16,4 +15,3 @@
   [plugins.inputs]
     sentryOrg = "test-organization-q3"
     sentryProject = "netlify-test-app"
-    sentryEnvironment = "production"

@@ -6,9 +6,6 @@ inputs:
   - name: sentryProject
     description: The slug of the project name in Sentry
     required: true
-  - name: sentryEnvironment
-    description: The name of the environment being deployed to
-    required: true
   - name: sentryAuthToken
     description: Authentication token for Sentry
   - name: sourceMapPath

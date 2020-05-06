@@ -35,8 +35,8 @@ module.exports = {
     /* Set the user input settings */
     const sentryOrg = process.env.SENTRY_ORG || inputs.sentryOrg
     const sentryProject = process.env.SENTRY_PROJECT || inputs.sentryProject
-    const sentryEnvironment = process.env.SENTRY_ENVIRONMENT || inputs.sentryEnvironment
     const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN || inputs.sentryAuthToken
+    const sentryEnvironment = process.env.SENTRY_ENVIRONMENT || process.env.CONTEXT
     const sourceMapPath = inputs.sourceMapPath || PUBLISH_DIR
     const sourceMapUrlPrefix = inputs.sourceMapUrlPrefix || DEFAULT_SOURCE_MAP_URL_PREFIX
 
