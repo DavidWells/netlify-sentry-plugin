@@ -10,7 +10,5 @@ inputs:
     description: Authentication token for Sentry
   - name: sourceMapPath
     description: Folder in which to scan for source maps to upload
-    default: 'build'
   - name: sourceMapUrlPrefix
     description: Optional prefix for the location of source maps
-    default: '~/'
