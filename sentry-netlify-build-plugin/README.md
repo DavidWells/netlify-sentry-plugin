@@ -11,46 +11,65 @@ Before proceeding, you'll first want to ensure that your Sentry project is set u
 
 Make sure build plugins are enabled on your site to see the plugin run.
 
-## Create a Sentry Internal Integration
-For Jenkins to communicate securely with Sentry, you'll need to create a new internal integration. In Sentry, navigate to: *Settings > Developer Settings > New Internal Integration*.
-
-Give your new integration a name (for example, Netlify Deploy Integration”) and specify the necessary permissions. In this case, we need Admin access for “Release” and Read access for “Organization”.
-
-Click “Save” at the bottom of the page and then grab your token, you'll need this in the next step.
-
 ## Installation
 
 To install, add the following lines to your `netlify.toml` file:
 
 ```toml
 [[plugins]]
-  package = "netlify-plugin-sentry"
+  package = "sentry-netlify-build-plugin"
 ```
 
 Note: The `[[plugins]]` line is required for each plugin, even if you have other plugins in your `netlify.toml` file already.
 
-## Configuration
+### Create a Sentry Internal Integration
+For Netlify to communicate securely with Sentry, you'll need to create a new internal integration. In Sentry, navigate to: *Settings > Developer Settings > New Internal Integration*.
 
-Configure the plugin with your sentry settings.
+Give your new integration a name (for example, Netlify Deploy Integration”) and specify the necessary permissions. In this case, we need Admin access for “Release” and Read access for “Organization”.
 
+![View of internal integration permissions.](images/internal-integration-permissions.png)
+
+Click “Save” at the bottom of the page and grab your token, which you’ll need this in the next step.
+
+
+### Set Environment Variables in Netlify
+Save the internal integration token as a [site environment variable](https://docs.netlify.com/configure-builds/environment-variables/):
+1. In Netlify, go to your site's settings.
+2. Click on "Build & deploy".
+3. Add a new environment variable and enter `SENTRY_AUTH_TOKEN` as the name and your internal integration token as the value.
+
+![View of internal integration permissions.](images/netlify-environment-variables.png)
+
+### Configuration
+Configure the plugin with your Sentry settings:
 ```toml
 [[plugins]]
-  package = "netlify-plugin-sentry"
+  package = "sentry-netlify-build-plugin"
 
   [plugins.inputs]
     sentryOrg = ""
     sentryProject = ""
-    sentryAuthToken = ""  # note: we recommend this be set as an environment variable (see below)
-    sourceMapPath = "" # default: netlify publish directory
-    sourceMapUrlPrefix = "" # default: "~/"
-    skipSetCommits = false # default: false
 ```
 
-For more information about the parameters above, please see the [Sentry release management docs](https://docs.sentry.io/cli/releases/).
+For more information about the parameters below, please see the [Sentry release management docs](https://docs.sentry.io/cli/releases/).
 
-You can also use [site environment variables](https://docs.netlify.com/configure-builds/environment-variables/) to configure these values.
 
-- `process.env.SENTRY_ORG` - The slug of the organization name in Sentry
-- `process.env.SENTRY_PROJECT` - The slug of the project name in Sentry
-- `process.env.SENTRY_ENVIRONMENT` - The name of the environment being deployed to (default: netlify [deploy context](https://docs.netlify.com/site-deploys/overview/#deploy-contexts))
-- `process.env.SENTRY_AUTH_TOKEN` - Authentication token for Sentry
+#### Plugin Inputs
+| name | description | default |
+|------|-------------|---------|
+| `sentryOrg` | The slug of the organization name in Sentry. | - |
+| `sentryProject` | The slug of the project name in Sentry. | - |
+| `sentryAuthToken` | Authentication token for Sentry (We recommend this be set as an environment variable (see below). | - |
+| `sourceMapPath` | Folder in which to scan for source maps to upload. | Netlify publish directory |
+| `sourceMapUrlPrefix` | Prefix for the location of source maps. | `"~/"` |
+| `skipSetCommits` | Set this to true if you want to disable commit tracking. | `false` |
+
+#### Environment Variables
+
+You can also use [site environment variables](https://docs.netlify.com/configure-builds/environment-variables/) to configure these values:
+| name | description | default |
+|------|-------------|---------|
+| `SENTRY_AUTH_TOKEN` | Authentication token for Sentry. | - |
+| `SENTRY_ORG` | The slug of the organization name in Sentry. | - |
+| `SENTRY_PROJECT` | The slug of the project name in Sentry. | - |
+| `SENTRY_ENVIRONMENT` | The name of the environment being deployed to. | Netlify [deploy context](https://docs.netlify.com/site-deploys/overview/#deploy-contexts) |

@@ -19,14 +19,6 @@ const DEFAULT_SOURCE_MAP_URL_PREFIX = "~/"
 
 module.exports = {
   onPostBuild: async (pluginApi) => {
-
-    
-    // Uncomment this block to see all the values pluginApi has
-    console.log('---------------------------------------------------')
-    console.log('Netlify Build Plugin API values')
-    console.log(inspect(pluginApi, { showHidden: false, depth: null }))
-    console.log('---------------------------------------------------')
-    
     const { constants, inputs, utils } = pluginApi
     const { PUBLISH_DIR, IS_LOCAL } = constants
 
