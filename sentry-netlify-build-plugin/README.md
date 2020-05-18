@@ -1,4 +1,4 @@
-# Sentry Netlify plugin &nbsp;&nbsp;&nbsp;<a href="https://app.netlify.com/start/deploy?repository=https://github.com/getsentry/sentry-netlify-build-plugin"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
+# Sentry Netlify build plugin &nbsp;&nbsp;&nbsp;<a href="https://app.netlify.com/start/deploy?repository=https://github.com/getsentry/sentry-netlify-build-plugin"><img src="https://www.netlify.com/img/deploy/button.svg"></a>
 
 Automatically upload source maps and notify [Sentry](https://sentry.io/) of new releases being deployed to your site after it finishes building in Netlify.
 
@@ -59,10 +59,11 @@ For more information about the parameters below, please see the [Sentry release 
 |------|-------------|---------|
 | `sentryOrg` | The slug of the organization name in Sentry. | - |
 | `sentryProject` | The slug of the project name in Sentry. | - |
-| `sentryAuthToken` | Authentication token for Sentry (We recommend this be set as an environment variable (see below). | - |
+| `sentryAuthToken` | Authentication token for Sentry. We recommend this be set as an environment variable (see below). | - |
 | `sourceMapPath` | Folder in which to scan for source maps to upload. | Netlify publish directory |
 | `sourceMapUrlPrefix` | Prefix for the location of source maps. | `"~/"` |
 | `skipSetCommits` | Set this to true if you want to disable commit tracking. | `false` |
+| `skipSourceMaps` | Set this to true if you want to disable sending source maps to Sentry. | `false` |
 
 #### Environment Variables
 

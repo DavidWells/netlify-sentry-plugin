@@ -15,3 +15,6 @@ inputs:
   - name: skipSetCommits
     description: Set this to true if you want to disable commit tracking
     default: False
+  - name: skipSourceMaps
+    description: Set this to true if you want to disable sending source maps to Sentry
+    default: False

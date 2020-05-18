@@ -32,6 +32,7 @@ module.exports = {
     const sourceMapPath = inputs.sourceMapPath || PUBLISH_DIR
     const sourceMapUrlPrefix = inputs.sourceMapUrlPrefix || DEFAULT_SOURCE_MAP_URL_PREFIX
     const skipSetCommits = inputs.skipSetCommits || false
+    const skipSourceMaps = inputs.skipSourceMaps || false
 
     if (RUNNING_IN_NETLIFY) {
       await createSentryConfig({ sentryOrg, sentryProject, sentryAuthToken })
@@ -42,7 +43,8 @@ module.exports = {
         sentryEnvironment,
         sourceMapPath,
         sourceMapUrlPrefix,
-        skipSetCommits
+        skipSetCommits,
+        skipSourceMaps
       })
 
       console.log()
@@ -54,7 +56,7 @@ module.exports = {
   }
 }
 
-async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix, skipSetCommits }) {
+async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix, skipSetCommits, skipSourceMaps }) {
   // default config file is read from ~/.sentryclirc
   if (!sentryAuthToken) {
     throw new Error('SentryCLI needs an authentication token. Please set env variable SENTRY_AUTH_TOKEN')
@@ -69,13 +71,15 @@ async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath
   await cli.releases.new(release)
 
   // https://docs.sentry.io/cli/releases/#managing-release-artifacts
-  await cli.releases.uploadSourceMaps(release, {
-    debug: false,
-    include: [sourceMapPath],
-    urlPrefix: sourceMapUrlPrefix,
-    rewrite: true,
-    ignore: ['node_modules']
-  })
+  if (!skipSourceMaps) {
+    await cli.releases.uploadSourceMaps(release, {
+      debug: false,
+      include: [sourceMapPath],
+      urlPrefix: sourceMapUrlPrefix,
+      rewrite: true,
+      ignore: ['node_modules']
+    })
+  }
 
   // https://docs.sentry.io/cli/releases/#sentry-cli-commit-integration
   if (!skipSetCommits) {
