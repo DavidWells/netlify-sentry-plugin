@@ -15,3 +15,4 @@
   [plugins.inputs]
     sentryOrg = "test-organization-q3"
     sentryProject = "netlify-test-app"
+    skipSourceMaps = true
