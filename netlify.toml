@@ -10,7 +10,7 @@
   SENTRY_AUTH_TOKEN = "Authentication token for Sentry"
 
 [[plugins]]
-  package = "../sentry-netlify-build-plugin"
+  package = "sentry-netlify-build-plugin"
 
   [plugins.inputs]
     sentryOrg = "test-organization-q3"
