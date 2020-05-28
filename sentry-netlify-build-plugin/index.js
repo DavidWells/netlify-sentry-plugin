@@ -90,7 +90,7 @@ async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath
     const repository = process.env.REPOSITORY_URL.split('/').slice(-2).join('/')
     try {
       await cli.releases.setCommits(release, {
-        repo: repository,
+        repo: "jonesphillip/notwork",
         commit: process.env.COMMIT_REF
       })
     } catch (error) {

@@ -10,7 +10,7 @@ function throwException() {
 export default function App() {
   return (
     <div className="App">
-      <h1>Test site ..........test...test..........</h1>
+      <h1>Test site ..........test...test..d........</h1>
       <button onClick={throwException}>Break the world</button>
     </div>
   )
