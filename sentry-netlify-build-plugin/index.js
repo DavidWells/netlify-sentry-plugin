@@ -38,15 +38,16 @@ module.exports = {
       if (!sentryAuthToken) {
         return utils.build.failBuild('SentryCLI needs an authentication token. Please set env variable SENTRY_AUTH_TOKEN')
       } else if (!sentryOrg) {
-        return utils.build.failBuild('SentryCLI needs the organization slug. Please set env variable SENTRY_ORG or set sentryOrg plugin input')
+        return utils.build.failBuild('SentryCLI needs the organization slug. Please set env variable SENTRY_ORG or set sentryOrg as a plugin input')
       } else if (!sentryProject) {
-        return utils.build.failBuild('SentryCLI needs the project slug. Please set env variable SENTRY_ORG or set sentryProject plugin input')
+        return utils.build.failBuild('SentryCLI needs the project slug. Please set env variable SENTRY_PROJECT or set sentryProject as a plugin input')
       }
-      
+
       await createSentryConfig({ sentryOrg, sentryProject, sentryAuthToken })
 
       /* Notify Sentry of release being deployed on Netlify */
       await sentryRelease({
+        pluginApi,
         sentryAuthToken,
         sentryEnvironment,
         sourceMapPath,
@@ -64,8 +65,9 @@ module.exports = {
   }
 }
 
-async function sentryRelease({ sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix, skipSetCommits, skipSourceMaps }) {
+async function sentryRelease({ pluginApi, sentryAuthToken, sentryEnvironment, sourceMapPath, sourceMapUrlPrefix, skipSetCommits, skipSourceMaps }) {
   // default config file is read from ~/.sentryclirc
+  const { constants, inputs, utils } = pluginApi
   const release = process.env.COMMIT_REF
   const cli = new SentryCli()
 
