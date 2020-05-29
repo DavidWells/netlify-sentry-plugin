@@ -13,5 +13,3 @@
 [[plugins]]
   package = "@sentry/netlify-build-plugin"
 
-  [plugins.inputs]
-    sentryProject = "netlify-test-app"
