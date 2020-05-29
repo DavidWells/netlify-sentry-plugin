@@ -34,6 +34,11 @@ module.exports = {
     const skipSetCommits = inputs.skipSetCommits || false
     const skipSourceMaps = inputs.skipSourceMaps || false
 
+    const repository = process.env.REPOSITORY_URL.split(/[:/]/).slice(-2).join('/')
+    console.log(repository)
+    const repository_gitlab = "git@gitlab.com:the-hq/hq.web.app".split(/[:/]/).slice(-2).join('/')
+    console.log(repository_gitlab)
+
     if (RUNNING_IN_NETLIFY) {
       if (!sentryAuthToken) {
         return utils.build.failBuild('SentryCLI needs an authentication token. Please set env variable SENTRY_AUTH_TOKEN')
@@ -89,10 +94,10 @@ async function sentryRelease({ pluginApi, sentryAuthToken, sentryEnvironment, so
 
   // https://docs.sentry.io/cli/releases/#sentry-cli-commit-integration
   if (!skipSetCommits) {
-    const repository = process.env.REPOSITORY_URL.split('/').slice(-2).join('/')
+    const repository = process.env.REPOSITORY_URL.split(/[:/]/).slice(-2).join('/')
     try {
       await cli.releases.setCommits(release, {
-        repo: "jonesphillip/notwork",
+        repo: repository,
         commit: process.env.COMMIT_REF
       })
     } catch (error) {
