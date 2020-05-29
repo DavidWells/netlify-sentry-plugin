@@ -9,10 +9,9 @@
   SENTRY_PROJECT = "Sentry project slug"
   SENTRY_AUTH_TOKEN = "Authentication token for Sentry"
 
+
 [[plugins]]
-  package = "@netlify/plugin-local-install-core"
-[[plugins]]
-  package = "../sentry-netlify-build-plugin"
+  package = "@sentry/netlify-build-plugin"
 
   [plugins.inputs]
     sentryProject = "netlify-test-app"
