@@ -1,0 +1,22 @@
+name: sentry-netlify-build-plugin
+inputs:
+  - name: sentryOrg
+    description: The slug of the organization name in Sentry
+  - name: sentryProject
+    description: The slug of the project name in Sentry
+  - name: sentryAuthToken
+    description: Authentication token for Sentry
+  - name: sentryRelease
+    description: The release ID (a.k.a version)
+  - name: sourceMapPath
+    description: Folder in which to scan for source maps to upload
+  - name: sourceMapUrlPrefix
+    description: Optional prefix for the location of source maps
+  - name: skipSetCommits
+    description: Set this to true if you want to disable commit tracking
+    default: False
+  - name: skipSourceMaps
+    description: Set this to true if you want to disable sending source maps to Sentry
+    default: False
+  - name: releasePrefix
+    description: Set this to prefix the release name with the value.
