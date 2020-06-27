@@ -1,6 +1,5 @@
 import React from 'react'
 import './App.css'
-const { promisify, inspect } = require('util')
 
 function throwException() {
   throw new Error('Exception on purpose')
