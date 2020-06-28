@@ -18,6 +18,12 @@ const SENTRY_CONFIG_PATH = path.resolve(CWD, '.sentryclirc')
 const DEFAULT_SOURCE_MAP_URL_PREFIX = "~/"
 
 module.exports = {
+  onPreBuild: async (pluginApi) => {
+    const { constants, inputs, utils } = pluginApi
+    const sentryRelease = process.env.SENTRY_RELEASE || inputs.sentryRelease || process.env.COMMIT_REF
+    const release = `${releasePrefix}${sentryRelease}`
+    process.env['SENTRY_RELEASE'] = release
+  },
   onPostBuild: async (pluginApi) => {
     const { constants, inputs, utils } = pluginApi
     const { PUBLISH_DIR, IS_LOCAL } = constants
