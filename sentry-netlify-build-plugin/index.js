@@ -21,6 +21,7 @@ module.exports = {
   onPreBuild: async (pluginApi) => {
     const { constants, inputs, utils } = pluginApi
     const sentryRelease = process.env.SENTRY_RELEASE || inputs.sentryRelease || process.env.COMMIT_REF
+    const releasePrefix = process.env.SENTRY_RELEASE_PREFIX || inputs.releasePrefix || ''
     const release = `${releasePrefix}${sentryRelease}`
     process.env['SENTRY_RELEASE'] = release
   },
